@@ -12,6 +12,7 @@ namespace ParkingApp
 
             var carParkService = CarParkService.Classes.CarParkService.Instance;
 
+            var output = carParkService.Execute(input);
 
             Console.WriteLine("Hello World!");
         }

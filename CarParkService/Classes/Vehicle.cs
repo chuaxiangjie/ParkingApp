@@ -6,6 +6,13 @@ namespace CarParkService.Classes
 {
     public abstract class Vehicle
     {
+        public Vehicle(string registrationNo, string color)
+        {
+
+            RegistrationNo = registrationNo;
+            Color = color;
+
+        }
 
         //aka number plate
         public string RegistrationNo { get; set; }

@@ -11,12 +11,13 @@ namespace CarParkService.Classes
         #region Fields
 
         private static readonly Lazy<CarParkService>
-            lazy =
-            new Lazy<CarParkService>
+            lazy = new Lazy<CarParkService>
                 (() => new CarParkService());
 
 
         public CarPark CarParkPremise { get; private set; }
+
+        private Dictionary<string, Func<string[], string>> _commandDict;
 
         public static CarParkService Instance { get { return lazy.Value; } }
 
@@ -26,79 +27,116 @@ namespace CarParkService.Classes
         private CarParkService()
         {
             CarParkPremise = new CarPark();
+
+            _commandDict = new Dictionary<string, Func<string[], string>>();
+
+            _commandDict.Add(Constants.CommandAction.CREATE_PARKING_LOT, CreateParkingLot);
+            _commandDict.Add(Constants.CommandAction.PARK, AssignCarSlot);
+            _commandDict.Add(Constants.CommandAction.LEAVE, ReleaseCarSlot);
+
         }
 
         #endregion
 
         #region Public Methods
 
-        public void Execute(string command)
+        public string Execute(string command)
         {
 
             string[] tokens = command.Split(' ');
 
             if (tokens.Length == 0)
-                return;
+                return "Invalid input";
 
             string actionCommand = tokens[0];
 
-            if (actionCommand.CompareStringIgnoreCase("create_parking_lot"))
+            if (_commandDict.ContainsKey(actionCommand)) 
             {
-
-                #region Create Parking Lot
-
-                if (tokens.Length > 2)
-                    return;
-
-                if (Int32.TryParse(tokens[1], out int numberofSlots))
-                {
-                    if (numberofSlots <= 0)
-                        return;
-
-                    //Invoke Create Parking Lot
-                    CreateParkingLot(numberofSlots);
-                }
-                else
-                {
-                    return;
-                }
-
-                #endregion
-
+                _commandDict[actionCommand](tokens);
             }
-            else if (actionCommand.CompareStringIgnoreCase("park"))
-            {
 
+            return "";
 
-
-
-
-            }
-            else if (actionCommand.CompareStringIgnoreCase("leave"))
-            {
-
-            }
-            else if (actionCommand.CompareStringIgnoreCase("status"))
-            {
-
-            }
-            else if (actionCommand.CompareStringIgnoreCase("registration_numbers_for_cars_with_colour"))
-            {
-
-            }
-            else if (actionCommand.CompareStringIgnoreCase("slot_number_for_registration_number"))
-            {
-
-            }
         }
 
         #endregion
 
         #region Private Methods
-        private void CreateParkingLot(int numberSlots)
+
+        #region Create Parking Lot
+
+        private string CreateParkingLot(string[] tokens)
         {
-            CarParkPremise.Init(numberSlots);
+       
+            if (tokens.Length != 2)
+                return "Invalid Format";
+
+            if (Int32.TryParse(tokens[1], out int numberofSlots))
+            {
+                if (numberofSlots <= 0)
+                    return "Invalid Format";
+
+                //Invoke Create Parking Lot
+                CarParkPremise.CreateParkingSlots(numberofSlots);
+            }
+            else
+            {
+                return "Invalid Format";
+            }
+
+            return "true";
         }
+
+        #endregion
+
+        #region Assign Car Slot
+
+        private string AssignCarSlot(string[] tokens)
+        {
+
+            if (tokens.Length != 3)
+                return "Invalid Format";
+
+            string carPlate = tokens[1];
+            string color = tokens[2];
+
+            if (String.IsNullOrEmpty(carPlate))
+                return "Car Plate cannot be empty";
+
+            if (String.IsNullOrEmpty(color))
+                return "Color cannot be empty";
+
+            //Invoke Park Car
+            return CarParkPremise.AssignCarSlot(carPlate, color);
+
+        }
+
+        #endregion
+
+        #region Release Car Slot
+
+        private string ReleaseCarSlot(string[] tokens)
+        {
+
+            if (tokens.Length != 2)
+                return "Invalid Format";
+
+            if (Int32.TryParse(tokens[1], out int slotNo))
+            {
+                if (slotNo <= 0)
+                    return "Invalid Format";
+
+                //Invoke Leave Car Slot
+                return CarParkPremise.ReleaseCarSlot(slotNo);
+            }
+            else
+            {
+                return "Invalid Format";
+            }
+
+        }
+
+        #endregion
 
         #endregion
 

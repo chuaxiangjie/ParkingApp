@@ -7,7 +7,7 @@ namespace CarParkService.Classes
     public class Car : Vehicle
     {
 
-        public Car() : base()
+        public Car(string registrationNo, string color) : base(registrationNo, color)
         {
 
         }
