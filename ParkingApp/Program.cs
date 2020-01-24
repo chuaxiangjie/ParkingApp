@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CarParkService.Classes;
+using System;
 
 namespace ParkingApp
 {
@@ -6,6 +7,12 @@ namespace ParkingApp
     {
         static void Main(string[] args)
         {
+
+            string input = "create_parking_lot 6";
+
+            var carParkService = CarParkService.Classes.CarParkService.Instance;
+
+
             Console.WriteLine("Hello World!");
         }
     }
