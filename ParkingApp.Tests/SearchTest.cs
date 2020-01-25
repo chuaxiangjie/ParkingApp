@@ -19,7 +19,7 @@ namespace ParkingApp.Tests
             string input = "create_parking_lot 10";
             carParkService.Execute(input);
 
-            var parkInputs = CommonHelper.Generate6ParkCarInputs();
+            var parkInputs = TestHelper.Generate6ParkCarInputs();
 
             foreach (var parkInput in parkInputs)
             {
@@ -27,6 +27,8 @@ namespace ParkingApp.Tests
             }
 
         }
+
+        #region Search : registration_numbers_for_cars_with_colour
 
         [TestCase("registration_numbers_for_cars_with_colour Black")]
         public void Can_search_registration_numbers_by_color(string input)
@@ -36,7 +38,7 @@ namespace ParkingApp.Tests
 
             var output = carParkService.Execute(input);
 
-            string[] results = output.Split(",");
+            string[] results = output.Split(", ");
 
             //expecting total 2 records
 
@@ -47,6 +49,18 @@ namespace ParkingApp.Tests
 
         }
 
+        [TestCase("registration_numbers_for_cars_with_colour Green")]
+        [TestCase("registration_numbers_for_cars_with_colour Cyan")]
+        public void Unable_to_search_registration_numbers_by_color(string input)
+        {
+
+            carParkService.Execute(input);
+
+            var output = carParkService.Execute(input);
+
+            StringAssert.AreEqualIgnoringCase(output, "Not found");
+
+        }
 
         [TestCase("registration_numbers_for_cars_with_colour")]
         [TestCase("registration_numbers_for_cars_with_colour Whit e ")]
@@ -54,6 +68,92 @@ namespace ParkingApp.Tests
         {
             Assert.Throws<ParkingSystemException>(() => carParkService.Execute(input));
         }
+
+        #endregion
+
+        #region Search : slot_numbers_for_cars_with_colour
+
+        [TestCase("slot_numbers_for_cars_with_colour Black")]
+        public void Can_search_slot_numbers_for_cars_by_color(string input)
+        {
+
+            carParkService.Execute(input);
+
+            var output = carParkService.Execute(input);
+
+            string[] results = output.Split(", ");
+
+            //expecting total 2 records
+            Assert.IsTrue(results.Length == 2);
+
+            StringAssert.AreEqualIgnoringCase(results[0], "3");
+            StringAssert.AreEqualIgnoringCase(results[1], "6");
+
+        }
+
+        [TestCase("slot_numbers_for_cars_with_colour Yellow")]
+        [TestCase("slot_numbers_for_cars_with_colour Purple")]
+        public void Unable_to_search_slot_numbers_for_cars_by_color(string input)
+        {
+
+            carParkService.Execute(input);
+
+            var output = carParkService.Execute(input);
+
+            StringAssert.AreEqualIgnoringCase(output, "Not found");
+
+        }
+
+
+        [TestCase("slot_numbers_for_cars_with_colour")]
+        [TestCase("slot_numbers_for_cars_with_colour Blac k")]
+        public void ErrorIfSlotNumbersByColorInputHasInvalidNumberOfParameters(string input)
+        {
+            Assert.Throws<ParkingSystemException>(() => carParkService.Execute(input));
+        }
+
+        #endregion
+
+        #region Search : slot_number_for_registration_number
+
+        [TestCase("slot_number_for_registration_number KA-01-HH-2701")]
+        public void Can_search_slot_numbers_by_registration_number(string input)
+        {
+
+            carParkService.Execute(input);
+
+            var output = carParkService.Execute(input);
+
+            string[] results = output.Split(", ");
+
+            //expecting total 1 records
+            Assert.IsTrue(results.Length == 1);
+
+            StringAssert.AreEqualIgnoringCase(results[0], "5");
+
+        }
+
+        [TestCase("slot_number_for_registration_number MH-04-AY-1111")]
+        [TestCase("slot_number_for_registration_number abc")]
+        public void Unable_to_search_slot_numbers_by_registration_number(string input)
+        {
+
+            carParkService.Execute(input);
+
+            var output = carParkService.Execute(input);
+
+            StringAssert.AreEqualIgnoringCase(output, "Not found");
+
+        }
+
+        [TestCase("slot_number_for_registration_number")]
+        [TestCase("slot_number_for_registration_number KA-01-HH- 2701")]
+        public void ErrorIfSlotNumbersByRegistrationNumberInputHasInvalidNumberOfParameters(string input)
+        {
+            Assert.Throws<ParkingSystemException>(() => carParkService.Execute(input));
+        }
+
+        #endregion
 
     }
 }

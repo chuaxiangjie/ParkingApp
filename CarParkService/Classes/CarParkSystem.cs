@@ -104,7 +104,7 @@ namespace CarParkService.Classes
                 // slotNo is not currently occupied
             }
         }
-    
+
         public string GetCarSlotsStatus(ParkingSlotType slotStatus)
         {
 
@@ -123,15 +123,27 @@ namespace CarParkService.Classes
             {
 
                 // Construct the header
-                strBuilder.Append("Slot No.".PadRight(5))
-                          .Append("Registration No".PadLeft(20))
-                          .AppendLine("Colour".PadLeft(20));
+                strBuilder.Append("Slot No.".PadRight(9))
+                          .Append("Registration No".PadRight(19))
+                          .AppendLine("Colour".PadRight(10));
 
-                foreach(var parkingSlot in parkingSlots)
+                for (int i = 0; i < parkingSlots.Count(); i++)
                 {
-                    strBuilder.Append(parkingSlot.SlotNo.ToString().PadRight(5))
-                              .Append(parkingSlot.Vehicle.RegistrationNo.PadLeft(20))
-                              .AppendLine(parkingSlot.Vehicle.Color.PadLeft(20));
+
+                    if (i == parkingSlots.Count() - 1)
+                    {
+                        //last record
+
+                        strBuilder.Append(parkingSlots[i].SlotNo.ToString().PadRight(9))
+                               .Append(parkingSlots[i].Vehicle.RegistrationNo.PadRight(19))
+                               .Append(parkingSlots[i].Vehicle.Color.PadRight(10));
+                    }
+                    else
+                    {
+                        strBuilder.Append(parkingSlots[i].SlotNo.ToString().PadRight(9))
+                             .Append(parkingSlots[i].Vehicle.RegistrationNo.PadRight(19))
+                             .AppendLine(parkingSlots[i].Vehicle.Color.PadRight(10));
+                    }
                 }
             }
 

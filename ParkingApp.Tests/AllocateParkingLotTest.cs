@@ -36,7 +36,7 @@ namespace ParkingApp.Tests
         public void ParkMultipleCars()
         {
 
-            var inputs = CommonHelper.Generate6ParkCarInputs();
+            var inputs = TestHelper.Generate6ParkCarInputs();
 
             foreach (var input in inputs)
             {
@@ -50,7 +50,7 @@ namespace ParkingApp.Tests
         public void ParkMultipleCarsExceededTotalParkingLot()
         {
 
-            var inputs = CommonHelper.Generate6ParkCarInputs();
+            var inputs = TestHelper.Generate6ParkCarInputs();
 
             inputs.Add(new KeyValuePair<string, string>("park KA-01-HH-1111 Grey", "Sorry, parking lot is full"));
         

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ParkingApp.Tests
 {
-    public static class CommonHelper
+    public static class TestHelper
     {
         public static List<KeyValuePair<string, string>> Generate6ParkCarInputs()
         {

@@ -37,8 +37,9 @@ namespace CarParkService.Classes
             _commandDict.Add(Constants.CommandAction.PARK, AssignCarSlot);
             _commandDict.Add(Constants.CommandAction.LEAVE, ReleaseCarSlot);
             _commandDict.Add(Constants.CommandAction.STATUS, GetCarParkSlotsStatus);
-            _commandDict.Add(Constants.CommandAction.REGISTRATION_NUMBERS_FOR_CARS_WITH_COLOUR, GetCarRegistrationNumbersByColour);
-            _commandDict.Add(Constants.CommandAction.SLOT_NUMBER_FOR_REGISTRATION_NUMBER, GetSlotNumbersForRegistrationNumber);
+            _commandDict.Add(Constants.CommandAction.GET_REGISTRATION_NUMBERS_FOR_CARS_BY_COLOUR, GetCarRegistrationNumbersByColour);
+            _commandDict.Add(Constants.CommandAction.GET_SLOT_NUMBERS_FOR_CARS_BY_COLOUR, GetSlotNumbersForCarsByColour);
+            _commandDict.Add(Constants.CommandAction.GET_SLOT_NUMBERS_BY_REGISTRATION_NUMBER, GetSlotNumberByRegistrationNumber);
         }
 
         #endregion
@@ -174,13 +175,13 @@ namespace CarParkService.Classes
 
             List<ParkingSlot> occupiedSlots = _carParkSystem.GetOccupiedSlotsByColour(targetColour);
 
-            if (occupiedSlots != null)
+            if (occupiedSlots != null && occupiedSlots.Count() > 0)
             {
-                return String.Join(",", occupiedSlots.Select(x => x.Vehicle.RegistrationNo));
+                return String.Join(", ", occupiedSlots.Select(x => x.Vehicle.RegistrationNo));
             }
             else
             {
-                return $"There are no registered cars of colour {targetColour}";
+                return $"Not found";
             }
 
         }
@@ -202,7 +203,7 @@ namespace CarParkService.Classes
             if (occupiedSlots == null || occupiedSlots.Count() == 0)
                 return "Not found";
 
-            return String.Join(",", occupiedSlots.Select(x => x.SlotNo));
+            return String.Join(", ", occupiedSlots.Select(x => x.SlotNo));
 
         }
 
@@ -210,7 +211,7 @@ namespace CarParkService.Classes
 
         #region Get slot_number_for_registration_number 
 
-        private string GetSlotNumbersForRegistrationNumber(string[] tokens)
+        private string GetSlotNumberByRegistrationNumber(string[] tokens)
         {
 
             if (tokens.Length != 2)
@@ -223,7 +224,7 @@ namespace CarParkService.Classes
             if (occupiedSlots == null || occupiedSlots.Count() == 0)
                 return "Not found";
 
-            return String.Join(",", occupiedSlots.Select(x => x.SlotNo));
+            return String.Join(", ", occupiedSlots.Select(x => x.SlotNo));
 
         }
 

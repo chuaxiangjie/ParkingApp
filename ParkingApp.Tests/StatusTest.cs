@@ -22,7 +22,7 @@ namespace ParkingApp.Tests
             string input = "create_parking_lot 10";
             carParkService.Execute(input);
 
-            var parkInputs = CommonHelper.Generate6ParkCarInputs();
+            var parkInputs = TestHelper.Generate6ParkCarInputs();
 
             foreach (var parkInput in parkInputs)
             {
