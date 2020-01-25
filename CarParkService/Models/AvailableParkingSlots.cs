@@ -1,9 +1,9 @@
-﻿using CarParkService.Classes;
+﻿using Libraries;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CarParkService
+namespace CarParkService.Models
 {
     public class AvailableParkingSlots : Heap<ParkingSlot>
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CarParkService.Extensions
+namespace Libraries.Extensions
 {
     public static class StringExtension
     {

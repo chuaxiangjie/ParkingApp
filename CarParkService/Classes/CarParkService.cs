@@ -1,6 +1,9 @@
-﻿using CarParkService.Extensions;
+﻿using CarParkService.Exceptions;
+using CarParkService.Models;
+using Libraries;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace CarParkService.Classes
@@ -15,7 +18,7 @@ namespace CarParkService.Classes
                 (() => new CarParkService());
 
 
-        public CarPark CarParkPremise { get; private set; }
+        internal CarParkSystem _carParkSystem { get; private set; }
 
         private Dictionary<string, Func<string[], string>> _commandDict;
 
@@ -26,14 +29,16 @@ namespace CarParkService.Classes
         #region Ctor
         private CarParkService()
         {
-            CarParkPremise = new CarPark();
+            _carParkSystem = new CarParkSystem();
 
             _commandDict = new Dictionary<string, Func<string[], string>>();
 
             _commandDict.Add(Constants.CommandAction.CREATE_PARKING_LOT, CreateParkingLot);
             _commandDict.Add(Constants.CommandAction.PARK, AssignCarSlot);
             _commandDict.Add(Constants.CommandAction.LEAVE, ReleaseCarSlot);
-
+            _commandDict.Add(Constants.CommandAction.STATUS, GetCarParkSlotsStatus);
+            _commandDict.Add(Constants.CommandAction.REGISTRATION_NUMBERS_FOR_CARS_WITH_COLOUR, GetCarRegistrationNumbersByColour);
+            _commandDict.Add(Constants.CommandAction.SLOT_NUMBER_FOR_REGISTRATION_NUMBER, GetSlotNumbersForRegistrationNumber);
         }
 
         #endregion
@@ -43,19 +48,21 @@ namespace CarParkService.Classes
         public string Execute(string command)
         {
 
-            string[] tokens = command.Split(' ');
+            string[] tokens = command.Trim().Split(' ');
 
             if (tokens.Length == 0)
-                return "Invalid input";
+                throw new ParkingSystemException(Constants.ErrorHandling.INVALID_NUMBER_OF_INPUT_PARAMETERS);
 
             string actionCommand = tokens[0];
 
-            if (_commandDict.ContainsKey(actionCommand)) 
+            if (_commandDict.ContainsKey(actionCommand))
             {
-                _commandDict[actionCommand](tokens);
+                return _commandDict[actionCommand](tokens);
             }
-
-            return "";
+            else
+            {
+                throw new ParkingSystemException("Unrecognized command");
+            }
 
         }
 
@@ -67,24 +74,25 @@ namespace CarParkService.Classes
 
         private string CreateParkingLot(string[] tokens)
         {
-       
+
             if (tokens.Length != 2)
-                return "Invalid Format";
+                throw new ParkingSystemException(Constants.ErrorHandling.INVALID_NUMBER_OF_INPUT_PARAMETERS);
 
             if (Int32.TryParse(tokens[1], out int numberofSlots))
             {
                 if (numberofSlots <= 0)
-                    return "Invalid Format";
+                    throw new ParkingSystemException("Number of slots should be more than 0");
 
                 //Invoke Create Parking Lot
-                CarParkPremise.CreateParkingSlots(numberofSlots);
+                _carParkSystem.CreateParkingSlots(numberofSlots);
+
+                return $"Created a parking lot with {numberofSlots} slots";
             }
             else
             {
-                return "Invalid Format";
+                throw new ParkingSystemException("Slot no must be integer");
             }
 
-            return "true";
         }
 
         #endregion
@@ -95,19 +103,19 @@ namespace CarParkService.Classes
         {
 
             if (tokens.Length != 3)
-                return "Invalid Format";
+                throw new ParkingSystemException(Constants.ErrorHandling.INVALID_NUMBER_OF_INPUT_PARAMETERS);
 
             string carPlate = tokens[1];
             string color = tokens[2];
 
             if (String.IsNullOrEmpty(carPlate))
-                return "Car Plate cannot be empty";
+                throw new ParkingSystemException("Car Plate cannot be empty");
 
             if (String.IsNullOrEmpty(color))
-                return "Color cannot be empty";
+                throw new ParkingSystemException("Color cannot be empty");
 
             //Invoke Park Car
-            return CarParkPremise.AssignCarSlot(carPlate, color);
+            return _carParkSystem.AssignCarSlot(carPlate, color);
 
         }
 
@@ -119,20 +127,103 @@ namespace CarParkService.Classes
         {
 
             if (tokens.Length != 2)
-                return "Invalid Format";
+                throw new ParkingSystemException(Constants.ErrorHandling.INVALID_NUMBER_OF_INPUT_PARAMETERS);
 
             if (Int32.TryParse(tokens[1], out int slotNo))
             {
                 if (slotNo <= 0)
-                    return "Invalid Format";
+                    throw new ParkingSystemException("Slot no must be more than 0");
 
-                //Invoke Leave Car Slot
-                return CarParkPremise.ReleaseCarSlot(slotNo);
+                //Invoke Release Car Slot
+                _carParkSystem.ReleaseCarSlot(slotNo);
+
+                return $"Slot number {slotNo} is free";
             }
             else
             {
-                return "Invalid Format";
+                throw new ParkingSystemException("Slot no must be integer");
             }
+
+        }
+
+        #endregion
+
+        #region Get car park slots Status
+
+        private string GetCarParkSlotsStatus(string[] tokens)
+        {
+
+            if (tokens.Length != 1)
+                throw new ParkingSystemException(Constants.ErrorHandling.INVALID_NUMBER_OF_INPUT_PARAMETERS);
+
+            return _carParkSystem.GetCarSlotsStatus(Enums.ParkingSlotType.Occupied);
+
+        }
+
+        #endregion
+
+        #region Get registration_numbers_for_cars_with_colour 
+
+        private string GetCarRegistrationNumbersByColour(string[] tokens)
+        {
+
+            if (tokens.Length != 2)
+                throw new ParkingSystemException(Constants.ErrorHandling.INVALID_NUMBER_OF_INPUT_PARAMETERS);
+
+            string targetColour = tokens[1];
+
+            List<ParkingSlot> occupiedSlots = _carParkSystem.GetOccupiedSlotsByColour(targetColour);
+
+            if (occupiedSlots != null)
+            {
+                return String.Join(",", occupiedSlots.Select(x => x.Vehicle.RegistrationNo));
+            }
+            else
+            {
+                return $"There are no registered cars of colour {targetColour}";
+            }
+
+        }
+
+        #endregion
+
+        #region Get slot_numbers_for_cars_with_colour 
+
+        private string GetSlotNumbersForCarsByColour(string[] tokens)
+        {
+
+            if (tokens.Length != 2)
+                throw new ParkingSystemException(Constants.ErrorHandling.INVALID_NUMBER_OF_INPUT_PARAMETERS);
+
+            string targetColour = tokens[1];
+
+            List<ParkingSlot> occupiedSlots = _carParkSystem.GetOccupiedSlotsByColour(targetColour);
+
+            if (occupiedSlots == null || occupiedSlots.Count() == 0)
+                return "Not found";
+
+            return String.Join(",", occupiedSlots.Select(x => x.SlotNo));
+
+        }
+
+        #endregion
+
+        #region Get slot_number_for_registration_number 
+
+        private string GetSlotNumbersForRegistrationNumber(string[] tokens)
+        {
+
+            if (tokens.Length != 2)
+                throw new ParkingSystemException(Constants.ErrorHandling.INVALID_NUMBER_OF_INPUT_PARAMETERS);
+
+            string registrationNumber = tokens[1];
+
+            List<ParkingSlot> occupiedSlots = _carParkSystem.GetOccupiedSlotsByRegistrationNumber(registrationNumber);
+
+            if (occupiedSlots == null || occupiedSlots.Count() == 0)
+                return "Not found";
+
+            return String.Join(",", occupiedSlots.Select(x => x.SlotNo));
 
         }
 

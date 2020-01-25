@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CarParkService
+namespace Libraries
 {
     public class Heap<T> where T : IComparable<T>
     {
@@ -25,6 +25,11 @@ namespace CarParkService
             this.HeapifyUp(elements.Count - 1);
         }
 
+        public void Destroy()
+        {
+            elements.Clear();
+        }
+
         public T PopMin()
         {
             if (elements.Count > 0)
@@ -38,6 +43,11 @@ namespace CarParkService
             }
 
             throw new InvalidOperationException("no element in heap");
+        }
+
+        public IList<T> GetAllNodes()
+        {
+            return elements;
         }
 
         private void HeapifyUp(int index)

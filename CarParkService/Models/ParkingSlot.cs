@@ -1,18 +1,13 @@
 ﻿using CarParkService.Enums;
 using System;
-using System.Collections.Generic;
 using System.Text;
 
-namespace CarParkService.Classes
+namespace CarParkService.Models
 {
     public class ParkingSlot : IComparable<ParkingSlot>
     {
 
-        public ParkingSlot(int slotNo)
-        {
-            Status = ParkingSlotType.Available;
-            SlotNo = SlotNo;
-        }
+        #region Fields
 
         public int SlotNo { get; private set; }
 
@@ -20,9 +15,21 @@ namespace CarParkService.Classes
 
         public Vehicle Vehicle { get; set; }
 
+        #endregion
+
+        #region Ctor
+        public ParkingSlot(int slotNo)
+        {
+            Status = ParkingSlotType.Available;
+            SlotNo = slotNo;
+        }
+
+        #endregion
+
+        #region Methods
         public int CompareTo(ParkingSlot obj)
         {
-            return this.Vehicle.RegistrationNo.CompareTo(obj.Vehicle.RegistrationNo);
+            return this.SlotNo.CompareTo(obj.SlotNo);
         }
 
         public void Reset()
@@ -35,7 +42,9 @@ namespace CarParkService.Classes
         {
             Vehicle = vehicle;
             Status = status;
-
         }
+
+        #endregion
+
     }
 }

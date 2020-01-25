@@ -1,4 +1,5 @@
 ﻿using CarParkService.Classes;
+using CarParkService.Exceptions;
 using System;
 
 namespace ParkingApp
@@ -8,13 +9,33 @@ namespace ParkingApp
         static void Main(string[] args)
         {
 
-            string input = "create_parking_lot 6";
-
             var carParkService = CarParkService.Classes.CarParkService.Instance;
 
-            var output = carParkService.Execute(input);
+            while (true)
+            {
 
-            Console.WriteLine("Hello World!");
+                try
+                {
+
+                    string input = Console.ReadLine();
+
+                    if (input.Equals("exit"))
+                        break;
+
+                    var output = carParkService.Execute(input);
+                    Console.WriteLine(output);
+                }
+                catch (ParkingSystemException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+
+            }
+      
         }
     }
 }
