@@ -2,6 +2,38 @@
 
 A smart parking app that automatically issue slot reservation for incoming cars. 
 
+## Application Logic
+
+The Parking System handles two logics (Available and Occupied Slots) represented by two different collection objects
+1. Min Heap - Represents the available parking slots
+2. Dictionary - <K,V> where K refers to slot no and V as slot object
+
+Parking lot of 6 is represented by a min heap tree where the root contain slot no 1. 
+The rest of the child nodes are greater than their parent node.
+
+Operation with Time complexity
+
+### Min Heap (Available Slots)
+
+| Process | Action | Time Complexity |
+| :---:       |     :---:      |          :---: |
+| Issue of slot ticket to incoming Car   | PopMin()    | O(1)    |
+| Release of car slot    | Add()       | O(1)    |
+
+### Dictionary (Occupied Slots)
+
+| Process | Action | Time Complexity |
+| :---:       |     :---:      |          :---: |
+| Denote slot as occupied with vehicle information   | Add()   | O(1)    |
+| Search via slot number    | Search()      | O(1)    |
+| Search via colour    | Search()      | O(n)    |
+| Search via registration number    | Search()      | O(n)    |
+
+When a slot is assigned to a car, the slot will be removed from the heap and added to the occupied collection (Dictionary).
+It provides information on the current slots that are occupied.
+
+When a car leaves the carpark, the slot is removed from the collection and added back to the heap.
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
@@ -58,7 +90,7 @@ Execute dotnet test
 Explain what these tests test and why
 
 ```
-Test focus on each of the allowable commands
+Test focus on each of the following commands
 
 1. Create Parking Lot
 2. Allocate Parking Lot
