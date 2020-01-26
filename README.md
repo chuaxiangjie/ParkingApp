@@ -1,6 +1,6 @@
 # ParkingApp
 
-A .Net Core console application written in C#. A smart parking app that automatically issue slot reservation for incoming cars. 
+A smart parking app that automatically issue slot reservation for incoming cars. 
 
 ## Getting Started
 
