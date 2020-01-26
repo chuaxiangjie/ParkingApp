@@ -103,6 +103,6 @@ Test focus on each of the following commands
 
 ## Built With
 
-* [.NET Core](https://dotnet.microsoft.com/download) - The library used
+* [.NET Core](https://dotnet.microsoft.com/download) - Microsoft Technology
 * [C#] - Programming language used
 
