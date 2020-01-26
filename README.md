@@ -52,14 +52,21 @@ Navigate to source directory and execute the following commands
 ## Running the tests
 
 Execute dotnet test
-![](ParkingApp%unit%test.PNG)
-
+![unit_test](https://user-images.githubusercontent.com/5947398/73134025-53839780-406c-11ea-8f93-64b47e393bf6.PNG)
 ### Break down into end to end tests
 
 Explain what these tests test and why
 
 ```
-Give an example
+Test focus on each of the allowable commands
+
+1. Create Parking Lot
+2. Allocate Parking Lot
+3. Leave Parking Slot
+4. Parking lot status
+5. Search parameters
+6. Test Drive application with multiple commands
+
 ```
 
 ## Built With
@@ -67,10 +74,3 @@ Give an example
 * [.NET Core](https://dotnet.microsoft.com/download) - The library used
 * [C#] - Programming language used
 
-
-
-## Acknowledgments
-
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
