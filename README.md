@@ -52,6 +52,7 @@ Navigate to source directory and execute the following commands
 ## Running the tests
 
 Execute dotnet test
+![](ParkingApp%unit%test.PNG)
 
 ### Break down into end to end tests
 
@@ -65,10 +66,6 @@ Give an example
 
 * [.NET Core](https://dotnet.microsoft.com/download) - The library used
 * [C#] - Programming language used
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
 
 
 
