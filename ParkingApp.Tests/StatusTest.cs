@@ -41,7 +41,7 @@ namespace ParkingApp.Tests
             var output = carParkService.Execute(input);
 
             List<string> list = new List<string>(
-                           output.Split(new string[] { "\r\n" },
+                           output.Split(new string[] { Environment.NewLine },
                            StringSplitOptions.RemoveEmptyEntries));
 
             //expecting total 6 records (+ 1 header)

@@ -64,7 +64,6 @@ namespace CarParkService.Classes
             {
                 throw new ParkingSystemException("Unrecognized command");
             }
-
         }
 
         #endregion

@@ -21,7 +21,6 @@ namespace ParkingApp
             }
             else
             {
-
                 // Execute commands via interactive console
                 ProcessFromConsole(carParkService);
             }

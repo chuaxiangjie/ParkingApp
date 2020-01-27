@@ -20,7 +20,7 @@ namespace ParkingApp.Tests
         public void Setup()
         {
 
-            string filePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"File\file_inputs.txt");
+            string filePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), $"File{Path.DirectorySeparatorChar}file_input.txt");
 
             if (File.Exists(filePath))
             {
@@ -31,7 +31,7 @@ namespace ParkingApp.Tests
                 Console.WriteLine($"Unable to locate file path: {filePath}");
             }
 
-            filePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"File\file_output.txt");
+            filePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), $"File{Path.DirectorySeparatorChar}file_output.txt");
 
             if (File.Exists(filePath))
             {

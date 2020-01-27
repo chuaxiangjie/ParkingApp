@@ -1,8 +1,10 @@
 {
   "profiles": {
     "ParkingApp": {
-      "commandName": "Project",
-      "commandLineArgs": "file_inputs.txt"
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
     }
   }
 }

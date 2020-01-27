@@ -123,9 +123,9 @@ namespace CarParkService.Classes
             {
 
                 // Construct the header
-                strBuilder.Append("Slot No.".PadRight(9))
+                strBuilder.Append("Slot No.".PadRight(12))
                           .Append("Registration No".PadRight(19))
-                          .AppendLine("Colour".PadRight(10));
+                          .AppendLine("Colour");
 
                 for (int i = 0; i < parkingSlots.Count(); i++)
                 {
@@ -134,15 +134,17 @@ namespace CarParkService.Classes
                     {
                         //last record
 
-                        strBuilder.Append(parkingSlots[i].SlotNo.ToString().PadRight(9))
+                        strBuilder.Append(parkingSlots[i].SlotNo.ToString().PadRight(12))
                                .Append(parkingSlots[i].Vehicle.RegistrationNo.PadRight(19))
-                               .Append(parkingSlots[i].Vehicle.Color.PadRight(10));
+                               .Append(parkingSlots[i].Vehicle.Color);
                     }
                     else
                     {
-                        strBuilder.Append(parkingSlots[i].SlotNo.ToString().PadRight(9))
+                        strBuilder.Append(parkingSlots[i].SlotNo.ToString().PadRight(12))
                              .Append(parkingSlots[i].Vehicle.RegistrationNo.PadRight(19))
-                             .AppendLine(parkingSlots[i].Vehicle.Color.PadRight(10));
+                             .Append(parkingSlots[i].Vehicle.Color);
+
+                        strBuilder.Append(Environment.NewLine);
                     }
                 }
             }
