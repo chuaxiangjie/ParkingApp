@@ -4,12 +4,12 @@ A smart parking app that automatically issue slot reservation for incoming cars.
 
 ## Application Logic
 
-The Parking System handles two logics (Available and Occupied Slots) represented by two different collection objects
-1. Min Heap - Represents the available parking slots
-2. Dictionary - <K,V> where K refers to slot no and V as slot object
+The Parking System breaks down parking lots into 2 different collections
+1. Min Heap - Represents all of the available parking lots
+2. Dictionary - Represents all of the occupied parking lots with slot no. as key
 
-Parking lot of 6 is represented by a min heap tree where the root contain slot no 1. 
-The rest of the child nodes are greater than their parent node.
+The Min heap binary data structure organized available parkings lots with its root containing slot no. 1
+When a car is assigned a parking lot, system shall pop the heap and assign the slot to the vehicle which is then inserted into the dictionary with <slotNo, Slot Obj>
 
 Operation with Time complexity
 
@@ -64,42 +64,50 @@ Navigate to source directory and execute the following commands
 ```
 #### Linux Environment
 
-Ensure wget command is available in bash
+1. Unzip folder and transfer parking_lot folder to a directory
 
-1. Execute the following bash scripts in sequence
-   * apt-get update
-   * apt install wget
-   * wget -q https://packages.microsoft.com/config/ubuntu/19.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
-   * dpkg -i packages-microsoft-prod.deb
-   * apt-get install apt-transport-https
-   * apt-get update
-   * apt-get install dotnet-sdk-2.2
+2. In bash shell, cd to the root directory in parking_lot folder where a "ls" command will display
+   * bin (Folder)
+   * functional_spec (Folder)
+   * ParkingApp (Source Code)
+   * ParkingLot-1.4.2 (pdf)
+
+3. Begin to execute "bin/setup" in bash shell, the following dependencies will be installed in linux environment
+     * .Net Core 2.2 SDK (Microsoft cross platform Framework)
+     * Nunit Test Framework
+
+     .Net Core Installation Reference : https://docs.microsoft.com/en-us/dotnet/core/install/linux-package-manager-ubuntu-1904
+
+    Once installed, the bash script will build the solution and execute Nunit unit test cases
+
+    You will be expecting Build Succeeded with No Errors and Total Tests Pass : 33
+
+    Now, the hosting OS is ready to execute the application
+
+4. At the same directory path (Parking_lot folder) in bash, there are two ways to run the application
+
+   a. Execute "bin/parking_lot"
    
-After installation, execute dotnet --version, verify version states 2.2
-
-Reference
-https://docs.microsoft.com/en-us/dotnet/core/install/linux-package-manager-ubuntu-1904
-
-
-2. Visual Studio Code [Optional]
-
-```
-Build and Run using bash
-
-Navigate to source directory and execute the following commands
--> dotnet build
--> dotnet test
--> dotnet run
-
-```
-
+      * Parking App console application is executed in Interactive Mode
+      * To exit the application, input "exit"
+   
+   b. Execute "bin/parking_lot file_input.txt"
+   
+     * Parking App console application is executed with given file path which will be automatically parse
+     * Output are displayed 
+     
+   Once we have confirmed the above steps are executed successfully, we can proceed to execute the given functional test suites
+   
+ 6. At the same directory path (Parking_lot folder) in bash, execute "bin/run_functional_tests"
+ 
+    You will be expecting test executed successfully with 7 examples, 0 failures, 1 pending
+ 
+ 
 ## Running the tests
 
-Execute dotnet test
-![unit_test](https://user-images.githubusercontent.com/5947398/73134025-53839780-406c-11ea-8f93-64b47e393bf6.PNG)
 ### Break down into end to end tests
 
-Explain what these tests test and why
+33 Unit Test Cases
 
 ```
 Test focus on each of the following commands
@@ -115,6 +123,6 @@ Test focus on each of the following commands
 
 ## Built With
 
-* [.NET Core](https://dotnet.microsoft.com/download) - Microsoft Technology
+* [.NET Core Console Application](https://dotnet.microsoft.com/download) - Microsoft Technology
 * [C#] - Programming language used
 
