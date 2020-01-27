@@ -4,6 +4,15 @@ A smart parking app that automatically issue slot reservation for incoming cars.
 
 ## Application Class Diagram
 
+![Parking App Class Diagram](https://user-images.githubusercontent.com/5947398/73186558-e6026480-415a-11ea-83b8-fae804d09a0c.png)
+
+#### Developer comments
+The above architecture design consists of
+   * Simple Factory class to instantiate service instance (SmartCarParkService)
+   * Client is exposed to only 1 feature (Execute) which will relay the input command to the service. This offers abstraction.
+   * In the carpark service model, it is responsible to tokenized the input string command and pass it on to the parking system instance
+   * In the carpark system implementation model, the requirements are implemented in SmartCarParkSystem which implements two interfaces, mainly for (registering and deregistrating vehicles) and query search operations. 
+   * SOLID Principles and OOP design are taken into consideration for extensibility and reusability.
 
 
 ## Application Logic
@@ -82,8 +91,13 @@ What things you need to install the software and how to install them
     Once installed, the bash script will build the solution and execute Nunit unit test cases
 
     You will be expecting Build Succeeded with No Errors and Total Tests Pass : 33
+    
+    ![parking_app_build](https://user-images.githubusercontent.com/5947398/73188311-a426ed80-415d-11ea-9b35-3950c89fa65d.PNG)
+    
+    ![image](https://user-images.githubusercontent.com/5947398/73188175-6b871400-415d-11ea-8a5f-c34a65aa8b85.png)
 
     Now, the hosting OS is ready to execute the application
+
 
 4. At the same directory path (Parking_lot folder) in bash, there are two ways to run the application
 
