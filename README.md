@@ -88,6 +88,8 @@ What things you need to install the software and how to install them
 
      .Net Core Installation Reference : https://docs.microsoft.com/en-us/dotnet/core/install/linux-package-manager-ubuntu-1904
 
+     > There might be occasions where it will require you to input "Y" to grant installation permission 
+
     Once installed, the bash script will build the solution and execute Nunit unit test cases
 
     You will be expecting Build Succeeded with No Errors and Total Tests Pass : 33
