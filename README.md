@@ -64,9 +64,7 @@ Navigate to source directory and execute the following commands
 ```
 #### Linux Environment
 
-1. Install latest .NET Core through bash CLI
-https://docs.microsoft.com/en-us/dotnet/core/install/linux-package-manager-ubuntu-1904
-
+Ensure wget command is available in bash
 
 1. Execute the following bash scripts in sequence
    * apt-get update
@@ -76,11 +74,12 @@ https://docs.microsoft.com/en-us/dotnet/core/install/linux-package-manager-ubunt
    * apt-get install apt-transport-https
    * apt-get update
    * apt-get install dotnet-sdk-2.2
-
-
-Please install .Net Core v2.2, ensure wget command is installed
-
+   
 After installation, execute dotnet --version, verify version states 2.2
+
+Reference
+https://docs.microsoft.com/en-us/dotnet/core/install/linux-package-manager-ubuntu-1904
+
 
 2. Visual Studio Code [Optional]
 
