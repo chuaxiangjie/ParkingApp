@@ -2,14 +2,19 @@
 
 A smart parking app that automatically issue slot reservation for incoming cars. 
 
+## Application Class Diagram
+
+
+
 ## Application Logic
 
 The Parking System breaks down parking lots into 2 different collections
 1. Min Heap - Represents all of the available parking lots
 2. Dictionary - Represents all of the occupied parking lots with slot no. as key
 
-The Min heap binary data structure organized available parkings lots with its root containing slot no. 1
-When a car is assigned a parking slot, system shall pop the heap and assign the slot to the vehicle which is then inserted into the dictionary with <slotNo, Slot Obj>
+
+#### Developer comments
+Both of the data structures represent different states (available/occupied) of the parking slots in a carpark. The following section will describe in details about the design and rationality
 
 Operation with Time complexity
 
@@ -18,10 +23,13 @@ Operation with Time complexity
 | Process | Action | Time Complexity |
 | :---:       |     :---:      |          :---: |
 | Issue of slot ticket to incoming Car   | PopMin()    | O(1)    |
-| Car left the slot  | Add()       | O(1)    |
+| Slot is released  | Add()       | O(1)    |
 
 
 #### Developer comments
+The Min heap binary data structure organized available parkings lots with its root containing slot no 1.
+When a car is assigned a parking slot, system shall pop the heap and assign the slot to the vehicle which is then inserted into the dictionary with <slotNo, Slot Obj>
+
 The Min Heap data structure is able to fulfill the requirement whereby incoming cars should always be assigned to the nearest available lot from the entry. It garunatees a time complexity of O(1).
 
 
@@ -42,7 +50,7 @@ It provides information on the current slots that are occupied.
 When a car leaves the carpark, the slot is removed from the collection and added back to the heap.
 
 #### Developer comments
-The rationale of using slot no. as hash key is that it offers time complexity of O(1) for Add() and Remove() processes as they are used in production environment for incoming and outgoing cars where performance is crucial.
+The rationale of using slot no. as hash key is that it offers time complexity of O(1) for Add() and Remove() processes as they are widely used in production environment for incoming and outgoing cars where performance is crucial.
 
 For search processes, we can afford to have higher latency with time complexity of O(n).
 
