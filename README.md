@@ -9,7 +9,7 @@ The Parking System breaks down parking lots into 2 different collections
 2. Dictionary - Represents all of the occupied parking lots with slot no. as key
 
 The Min heap binary data structure organized available parkings lots with its root containing slot no. 1
-When a car is assigned a parking lot, system shall pop the heap and assign the slot to the vehicle which is then inserted into the dictionary with <slotNo, Slot Obj>
+When a car is assigned a parking slot, system shall pop the heap and assign the slot to the vehicle which is then inserted into the dictionary with <slotNo, Slot Obj>
 
 Operation with Time complexity
 
@@ -18,13 +18,20 @@ Operation with Time complexity
 | Process | Action | Time Complexity |
 | :---:       |     :---:      |          :---: |
 | Issue of slot ticket to incoming Car   | PopMin()    | O(1)    |
-| Release of car slot    | Add()       | O(1)    |
+| Car left the slot  | Add()       | O(1)    |
+
+
+#### Developer comments
+The Min Heap data structure is able to fulfill the requirement whereby incoming cars should always be assigned to the nearest available lot from the entry. It garunatees a time complexity of O(1).
+
 
 ### Dictionary (Occupied Slots)
 
 | Process | Action | Time Complexity |
 | :---:       |     :---:      |          :---: |
-| Denote slot as occupied with vehicle information   | Add()   | O(1)    |
+| Add car occupied slot   | Add()   | O(1)    |
+| Check slot no  | Contains()   | O(1)    |
+| Remove car occupied slot | Remove()   | O(1)    |
 | Search via slot number    | Search()      | O(1)    |
 | Search via colour    | Search()      | O(n)    |
 | Search via registration number    | Search()      | O(n)    |
@@ -33,6 +40,12 @@ When a slot is assigned to a car, the slot will be removed from the heap and add
 It provides information on the current slots that are occupied.
 
 When a car leaves the carpark, the slot is removed from the collection and added back to the heap.
+
+#### Developer comments
+The rationale of using slot no. as hash key is that it offers time complexity of O(1) for Add() and Remove() processes as they are used in production environment for incoming and outgoing cars where performance is crucial.
+
+For search processes, we can afford to have higher latency with time complexity of O(n).
+
 
 ## Getting Started
 
@@ -104,7 +117,7 @@ Navigate to source directory and execute the following commands
 
 ```
 
-## Running the Nunit tests
+## Information on Nunit tests
 
 ### Break down into end to end tests
 
