@@ -103,7 +103,7 @@ Navigate to source directory and execute the following commands
     You will be expecting test executed successfully with 7 examples, 0 failures, 1 pending
  
  
-## Running the tests
+## Running the Nunit tests
 
 ### Break down into end to end tests
 
