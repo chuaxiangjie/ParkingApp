@@ -42,26 +42,6 @@ These instructions will get you a copy of the project up and running on your loc
 
 What things you need to install the software and how to install them
 
-#### Windows Environment
-
-1. Install latest .NET Core
-(https://dotnet.microsoft.com/download)
-
-2. Visual Studio 2019 [Optional]
-
-```
-Build and Run using Visual Studio 2019
-
--> Clone repository using VS, build and run application
-
-Build and Run using .NET CLI
-
-Navigate to source directory and execute the following commands
--> dotnet build
--> dotnet test
--> dotnet run
-
-```
 #### Linux Environment
 
 1. Unzip folder and transfer parking_lot folder to a directory
@@ -102,7 +82,28 @@ Navigate to source directory and execute the following commands
  
     You will be expecting test executed successfully with 7 examples, 0 failures, 1 pending
  
- 
+
+#### Windows Environment
+
+1. Install latest .NET Core
+(https://dotnet.microsoft.com/download)
+
+2. Visual Studio 2019 [Optional]
+
+```
+Build and Run using Visual Studio 2019
+
+-> Clone repository using VS, build and run application
+
+Build and Run using .NET CLI
+
+Navigate to source directory and execute the following commands
+-> dotnet build
+-> dotnet test
+-> dotnet run
+
+```
+
 ## Running the Nunit tests
 
 ### Break down into end to end tests
