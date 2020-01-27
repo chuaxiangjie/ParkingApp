@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CarParkService.Models
+namespace ParkingApp.Service.Models
 {
     public class AvailableParkingSlots : Heap<ParkingSlot>
     {

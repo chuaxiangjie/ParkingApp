@@ -1,8 +1,9 @@
-﻿using CarParkService.Enums;
+﻿using ParkingApp.Service.Enums;
+using ParkingApp.Service.Service.Models;
 using System;
 using System.Text;
 
-namespace CarParkService.Models
+namespace ParkingApp.Service.Models
 {
     public class ParkingSlot : IComparable<ParkingSlot>
     {

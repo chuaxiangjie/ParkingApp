@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CarParkService\CarParkService.csproj" />
+    <ProjectReference Include="..\CarParkService\ParkingApp.Service.csproj" />
   </ItemGroup>
 
   <ItemGroup>

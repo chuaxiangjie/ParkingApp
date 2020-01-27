@@ -1,5 +1,7 @@
-using CarParkService.Exceptions;
 using NUnit.Framework;
+using ParkingApp.Service.Enums;
+using ParkingApp.Service.Factories;
+using ParkingApp.Service.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,12 +15,15 @@ namespace ParkingApp.Tests
     public class FullFledgedTest
     {
 
+        IClientCarParkService carParkService;
         string[] commands;
         string[] source_results;
 
         [SetUp]
         public void Setup()
         {
+
+            carParkService = CarParkServiceFactory.Build(CarParkModelType.SmartModel);
 
             string filePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), $"File{Path.DirectorySeparatorChar}file_input.txt");
 
@@ -52,7 +57,7 @@ namespace ParkingApp.Tests
 
             foreach (string command in commands)
             {
-                var output = CarParkService.Classes.CarParkService.Instance.Execute(command);
+                var output = carParkService.Execute(command);
                 sb.AppendLine(output);
             }
 

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace CarParkService.Exceptions
+namespace ParkingApp.Service.Exceptions
 {
     [Serializable]
     public class ParkingSystemException : Exception

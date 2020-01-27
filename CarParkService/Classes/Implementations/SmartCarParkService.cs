@@ -1,35 +1,32 @@
-﻿using CarParkService.Exceptions;
-using CarParkService.Models;
-using Libraries;
+﻿using Libraries;
+using ParkingApp.Service.Abstracts;
+using ParkingApp.Service.Exceptions;
+using ParkingApp.Service.Interfaces;
+using ParkingApp.Service.Models;
+using ParkingApp.Service.Service.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CarParkService.Classes
+namespace ParkingApp.Service.Classes.Implementations
 {
-    public sealed class CarParkService
+    public class SmartCarParkService : ServiceBase<SmartCarParkSystem>, IClientCarParkService
     {
 
         #region Fields
 
-        private static readonly Lazy<CarParkService>
-            lazy = new Lazy<CarParkService>
-                (() => new CarParkService());
-
-
-        internal CarParkSystem _carParkSystem { get; private set; }
-
         private Dictionary<string, Func<string[], string>> _commandDict;
 
-        public static CarParkService Instance { get { return lazy.Value; } }
+        protected override SmartCarParkSystem _carParkSystem { get; set; }
 
         #endregion
 
         #region Ctor
-        private CarParkService()
+        public SmartCarParkService()
         {
-            _carParkSystem = new CarParkSystem();
+
+            _carParkSystem = new SmartCarParkSystem();
 
             _commandDict = new Dictionary<string, Func<string[], string>>();
 
@@ -70,8 +67,6 @@ namespace CarParkService.Classes
 
         #region Private Methods
 
-        #region Create Parking Lot
-
         private string CreateParkingLot(string[] tokens)
         {
 
@@ -95,10 +90,6 @@ namespace CarParkService.Classes
 
         }
 
-        #endregion
-
-        #region Assign Car Slot
-
         private string AssignCarSlot(string[] tokens)
         {
 
@@ -114,14 +105,22 @@ namespace CarParkService.Classes
             if (String.IsNullOrEmpty(color))
                 throw new ParkingSystemException("Color cannot be empty");
 
+            //Create instance of Car
+            Vehicle car = new Car(carPlate, color);
+
             //Invoke Park Car
-            return _carParkSystem.AssignCarSlot(carPlate, color);
+            var response = _carParkSystem.RegisterVehicleArrival(car);
+
+            if (response.IsSuccessful)
+            {
+                return response.Message;
+            }
+            else
+            {
+                return response.ErrorMessage;
+            }
 
         }
-
-        #endregion
-
-        #region Release Car Slot
 
         private string ReleaseCarSlot(string[] tokens)
         {
@@ -135,9 +134,12 @@ namespace CarParkService.Classes
                     throw new ParkingSystemException("Slot no must be more than 0");
 
                 //Invoke Release Car Slot
-                _carParkSystem.ReleaseCarSlot(slotNo);
+                var response = _carParkSystem.RegisterVehicleExit(slotNo);
 
-                return $"Slot number {slotNo} is free";
+                if (response.IsSuccessful)
+                    return $"Slot number {slotNo} is free";
+                else
+                    return response.ErrorMessage;
             }
             else
             {
@@ -146,23 +148,20 @@ namespace CarParkService.Classes
 
         }
 
-        #endregion
-
-        #region Get car park slots Status
-
         private string GetCarParkSlotsStatus(string[] tokens)
         {
 
             if (tokens.Length != 1)
                 throw new ParkingSystemException(Constants.ErrorHandling.INVALID_NUMBER_OF_INPUT_PARAMETERS);
 
-            return _carParkSystem.GetCarSlotsStatus(Enums.ParkingSlotType.Occupied);
+            var response = _carParkSystem.GetCarSlotsStatus(Enums.ParkingSlotType.Occupied);
+
+            if (response.IsSuccessful)
+                return response.Message;
+            else
+                return response.ErrorMessage;
 
         }
-
-        #endregion
-
-        #region Get registration_numbers_for_cars_with_colour 
 
         private string GetCarRegistrationNumbersByColour(string[] tokens)
         {
@@ -172,7 +171,7 @@ namespace CarParkService.Classes
 
             string targetColour = tokens[1];
 
-            List<ParkingSlot> occupiedSlots = _carParkSystem.GetOccupiedSlotsByColour(targetColour);
+            List<ParkingSlot> occupiedSlots = _carParkSystem.GetOccupiedSlotsByColour(targetColour).ToList();
 
             if (occupiedSlots != null && occupiedSlots.Count() > 0)
             {
@@ -185,10 +184,6 @@ namespace CarParkService.Classes
 
         }
 
-        #endregion
-
-        #region Get slot_numbers_for_cars_with_colour 
-
         private string GetSlotNumbersForCarsByColour(string[] tokens)
         {
 
@@ -197,7 +192,7 @@ namespace CarParkService.Classes
 
             string targetColour = tokens[1];
 
-            List<ParkingSlot> occupiedSlots = _carParkSystem.GetOccupiedSlotsByColour(targetColour);
+            List<ParkingSlot> occupiedSlots = _carParkSystem.GetOccupiedSlotsByColour(targetColour).ToList();
 
             if (occupiedSlots == null || occupiedSlots.Count() == 0)
                 return "Not found";
@@ -205,10 +200,6 @@ namespace CarParkService.Classes
             return String.Join(", ", occupiedSlots.Select(x => x.SlotNo));
 
         }
-
-        #endregion
-
-        #region Get slot_number_for_registration_number 
 
         private string GetSlotNumberByRegistrationNumber(string[] tokens)
         {
@@ -218,7 +209,7 @@ namespace CarParkService.Classes
 
             string registrationNumber = tokens[1];
 
-            List<ParkingSlot> occupiedSlots = _carParkSystem.GetOccupiedSlotsByRegistrationNumber(registrationNumber);
+            List<ParkingSlot> occupiedSlots = _carParkSystem.GetOccupiedSlotsByRegistrationNumber(registrationNumber).ToList();
 
             if (occupiedSlots == null || occupiedSlots.Count() == 0)
                 return "Not found";
@@ -226,8 +217,6 @@ namespace CarParkService.Classes
             return String.Join(", ", occupiedSlots.Select(x => x.SlotNo));
 
         }
-
-        #endregion
 
         #endregion
 

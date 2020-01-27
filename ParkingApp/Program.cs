@@ -1,17 +1,20 @@
-﻿using CarParkService.Classes;
-using CarParkService.Exceptions;
+﻿using ParkingApp.Service.Enums;
+using ParkingApp.Service.Exceptions;
+using ParkingApp.Service.Factories;
+using ParkingApp.Service.Interfaces;
 using System;
 using System.IO;
 using System.Reflection;
 
-namespace ParkingApp
+namespace ParkingApp.Client
 {
     class Program
     {
         static void Main(string[] args)
         {
 
-            var carParkService = CarParkService.Classes.CarParkService.Instance;
+            IClientCarParkService carParkService = CarParkServiceFactory.Build(CarParkModelType.SmartModel);
+
             int numberOfArguments = args.Length;
 
             if (numberOfArguments > 0)
@@ -26,7 +29,7 @@ namespace ParkingApp
             }
         }
 
-        static void ProcessFromFile(CarParkService.Classes.CarParkService service, string fileName)
+        static void ProcessFromFile(IClientCarParkService service, string fileName)
         {
    
             string filePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), fileName);
@@ -61,7 +64,7 @@ namespace ParkingApp
 
         }
 
-        static void ProcessFromConsole(CarParkService.Classes.CarParkService service)
+        static void ProcessFromConsole(IClientCarParkService service)
         {
 
             while (true)

@@ -1,23 +1,42 @@
-﻿using CarParkService.Enums;
-using CarParkService.Exceptions;
-using CarParkService.Models;
-using Libraries.Extensions;
+﻿using Libraries.Extensions;
+using ParkingApp.Service.Abstracts;
+using ParkingApp.Service.Enums;
+using ParkingApp.Service.Exceptions;
+using ParkingApp.Service.Interfaces;
+using ParkingApp.Service.Models;
+using ParkingApp.Service.Service.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CarParkService.Classes
+namespace ParkingApp.Service.Classes.Implementations
 {
-    internal class CarParkSystem
+    public class SmartCarParkSystem : ISmartCarParkPlugin
     {
 
-        // <K,V> - <slotNo, ParkingSlot>
+        #region Fields
+
+        /// <summary>
+        /// <K,V> - <slotNo, ParkingSlot>
+        /// Gets or sets the occupied parking slots
+        /// </summary>
         Dictionary<int, ParkingSlot> _occupiedParkingSlots { get; set; }
 
+        /// <summary>
+        /// Gets or sets the available parking slots
+        /// </summary>
         AvailableParkingSlots _availableParkingSlots { get; set; }
 
-        public CarParkSystem()
+        public int OccupiedSlotsCount => _occupiedParkingSlots.Count();
+
+        public int AvailableSlotsCount => _availableParkingSlots.GetSize();
+
+        #endregion
+
+        #region Ctor
+
+        public SmartCarParkSystem()
         {
 
             //Initialize ParkingSlots
@@ -26,6 +45,10 @@ namespace CarParkService.Classes
             _availableParkingSlots = new AvailableParkingSlots();
 
         }
+
+        #endregion
+
+        #region Public Methods
 
         public void CreateParkingSlots(int number)
         {
@@ -44,14 +67,16 @@ namespace CarParkService.Classes
 
         }
 
-        public string AssignCarSlot(string registrationNo, string color)
+        public Response RegisterVehicleArrival(Vehicle vehicle)
         {
+
+            Response response = new Response();
 
             if (!CheckIfParkingLotIsCreated())
                 throw new ParkingSystemException("Please create parking lot first");
 
             //Check if registrationNo exists in occupied parking slots
-            var existingOccupiedSlot = _occupiedParkingSlots.SingleOrDefault(x => x.Value.Vehicle.RegistrationNo == registrationNo);
+            var existingOccupiedSlot = _occupiedParkingSlots.SingleOrDefault(x => x.Value.Vehicle.RegistrationNo.CompareStringIgnoreCase(vehicle.RegistrationNo));
 
             if (!existingOccupiedSlot.Equals(default(KeyValuePair<int, ParkingSlot>)))
             {
@@ -60,32 +85,33 @@ namespace CarParkService.Classes
                 _availableParkingSlots.Add(existingOccupiedSlot.Value);
             }
 
-
             //Check for available parking lots
-
             if (_availableParkingSlots.GetSize() > 0)
             {
                 // assign an empty slot, pop heap
                 var assignedSlot = _availableParkingSlots.PopMin();
 
-                Vehicle targetVehicle = new Car(registrationNo, color);
-
-                assignedSlot.AssignedVehicle(targetVehicle, ParkingSlotType.Occupied);
+                assignedSlot.AssignedVehicle(vehicle, ParkingSlotType.Occupied);
 
                 _occupiedParkingSlots.Add(assignedSlot.SlotNo, assignedSlot);
 
-                return $"Allocated slot number: {assignedSlot.SlotNo}";
-
+                response.Message = $"Allocated slot number: {assignedSlot.SlotNo}";
+                response.IsSuccessful = true;
             }
             else
             {
                 // carpark is full
-                return $"Sorry, parking lot is full";
+                response.ErrorMessage = $"Sorry, parking lot is full";
+                response.IsSuccessful = false;
             }
+
+            return response;
         }
 
-        public void ReleaseCarSlot(int slotNo)
+        public Response RegisterVehicleExit(int slotNo)
         {
+
+            Response response = new Response();
 
             if (!CheckIfParkingLotIsCreated())
                 throw new ParkingSystemException("Please create parking lot first");
@@ -103,13 +129,21 @@ namespace CarParkService.Classes
             {
                 // slotNo is not currently occupied
             }
+
+            response.Message = $"Slot number {slotNo} is free";
+            response.IsSuccessful = true;
+
+            return response;
+
         }
 
-        public string GetCarSlotsStatus(ParkingSlotType slotStatus)
+        public Response GetCarSlotsStatus(ParkingSlotType slotStatus)
         {
 
             if (!CheckIfParkingLotIsCreated())
                 throw new ParkingSystemException("Please create parking lot first");
+
+            Response response = new Response();
 
             StringBuilder strBuilder = new StringBuilder();
             IList<ParkingSlot> parkingSlots = null;
@@ -133,7 +167,6 @@ namespace CarParkService.Classes
                     if (i == parkingSlots.Count() - 1)
                     {
                         //last record
-
                         strBuilder.Append(parkingSlots[i].SlotNo.ToString().PadRight(12))
                                .Append(parkingSlots[i].Vehicle.RegistrationNo.PadRight(19))
                                .Append(parkingSlots[i].Vehicle.Color);
@@ -149,11 +182,14 @@ namespace CarParkService.Classes
                 }
             }
 
-            return strBuilder.ToString();
+            response.IsSuccessful = true;
+            response.Message = strBuilder.ToString();
+
+            return response;
 
         }
 
-        public List<ParkingSlot> GetOccupiedSlotsByColour(string colour)
+        public IList<ParkingSlot> GetOccupiedSlotsByColour(string colour)
         {
 
             if (!CheckIfParkingLotIsCreated())
@@ -165,7 +201,7 @@ namespace CarParkService.Classes
 
         }
 
-        public List<ParkingSlot> GetOccupiedSlotsByRegistrationNumber(string registrationNumber)
+        public IList<ParkingSlot> GetOccupiedSlotsByRegistrationNumber(string registrationNumber)
         {
 
             if (!CheckIfParkingLotIsCreated())
@@ -177,6 +213,12 @@ namespace CarParkService.Classes
 
         }
 
+        public bool IsCarParkFull() => _availableParkingSlots.GetSize() == 0;
+
+        #endregion
+
+        #region Private Methods
+
         private bool CheckIfParkingLotIsCreated()
         {
 
@@ -184,7 +226,6 @@ namespace CarParkService.Classes
                 return false;
 
             return true;
-
         }
 
         private void Destroy()
@@ -193,9 +234,7 @@ namespace CarParkService.Classes
             _occupiedParkingSlots.Clear();
         }
 
-        public int Count => _occupiedParkingSlots.Count();
-
-        public bool IsCarParkFull() => _availableParkingSlots.GetSize() == 0;
+        #endregion
 
     }
 }

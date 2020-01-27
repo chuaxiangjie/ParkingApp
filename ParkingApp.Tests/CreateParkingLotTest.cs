@@ -1,5 +1,8 @@
-using CarParkService.Exceptions;
 using NUnit.Framework;
+using ParkingApp.Service.Enums;
+using ParkingApp.Service.Exceptions;
+using ParkingApp.Service.Factories;
+using ParkingApp.Service.Interfaces;
 
 namespace ParkingApp.Tests
 {
@@ -8,12 +11,12 @@ namespace ParkingApp.Tests
     public class CreateParkingLotTest
     {
 
-        CarParkService.Classes.CarParkService carParkService;
+        IClientCarParkService carParkService;
 
         [SetUp]
         public void Setup()
         {
-            carParkService = CarParkService.Classes.CarParkService.Instance;
+            carParkService = CarParkServiceFactory.Build(CarParkModelType.SmartModel);
         }
 
 

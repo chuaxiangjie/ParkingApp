@@ -1,16 +1,18 @@
-﻿using System;
+﻿using ParkingApp.Service.Enums;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CarParkService.Models
+namespace ParkingApp.Service.Service.Models
 {
     public abstract class Vehicle
     {
-        public Vehicle(string registrationNo, string color)
+        public Vehicle(string registrationNo, string color, VehicleType type)
         {
 
             RegistrationNo = registrationNo;
             Color = color;
+            Type = type;
 
         }
 
@@ -18,6 +20,8 @@ namespace CarParkService.Models
         public string RegistrationNo { get; set; }
 
         public string Color { get; set; }
+
+        public VehicleType Type { get; set; }
 
     }
 }

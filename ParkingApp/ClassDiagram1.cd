@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="ParkingApp.Service.Abstracts.ServiceBase&lt;T&gt;">
+    <Position X="4.25" Y="6" Width="2.25" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="ParkingApp.Service.Classes.Implementations.SmartCarParkService">
+    <Position X="0.5" Y="3" Width="3.5" />
+    <InheritanceLine Type="ParkingApp.Service.Abstracts.ServiceBase&lt;T&gt;" ManuallyRouted="true" FixedToPoint="true">
+      <Path>
+        <Point X="5.375" Y="6" />
+        <Point X="5.375" Y="5.252" />
+        <Point X="2.5" Y="5.252" />
+        <Point X="2.5" Y="4.877" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ParkingApp.Service.Classes.Implementations.SmartCarParkSystem">
+    <Position X="2.75" Y="8.5" Width="4.75" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ParkingApp.Service.Service.Models.Vehicle">
+    <Position X="10.5" Y="6.75" Width="4" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="ParkingApp.Service.Models.Car">
+    <Position X="11" Y="9.75" Width="2.75" />
+    <InheritanceLine Type="ParkingApp.Service.Service.Models.Vehicle" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="12.5" Y="8.69" />
+        <Point X="12.5" Y="9.75" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="ParkingApp.Service.Models.ParkingSlot">
+    <Position X="10.5" Y="11.5" Width="4.25" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="ParkingApp.Service.Factories.CarParkServiceFactory">
+    <Position X="10.75" Y="1.25" Width="3.75" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Libraries.Heap&lt;T&gt;">
+    <Position X="0.5" Y="6.25" Width="1.75" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="ParkingApp.Service.Classes.Implementations.TraditionalCarParkService">
+    <Position X="6.5" Y="3" Width="3.75" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ParkingApp.Service.Classes.Implementations.TradtionalCarParkSystem">
+    <Position X="10.75" Y="4.75" Width="2.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="ParkingApp.Service.Interfaces.ICarParkSystem">
+    <Position X="2.75" Y="14.75" Width="3.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="ParkingApp.Service.Interfaces.IClientCarParkService">
+    <Position X="1" Y="0.75" Width="2.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="ParkingApp.Service.Interfaces.ISmartCarParkPlugin">
+    <Position X="2" Y="12" Width="4.75" />
+    <InheritanceLine Type="ParkingApp.Service.Interfaces.ICarParkSystem" ManuallyRouted="true" FixedFromPoint="true">
+      <Path>
+        <Point X="4.375" Y="14.75" />
+        <Point X="4.375" Y="14.582" />
+        <Point X="4.375" Y="13.617" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier />
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
