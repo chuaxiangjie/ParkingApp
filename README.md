@@ -94,7 +94,7 @@ What things you need to install the software and how to install them
 
     You will be expecting Build Succeeded with No Errors and Total Tests Pass : 33
     
-    ![parking_app_build](https://user-images.githubusercontent.com/5947398/73188311-a426ed80-415d-11ea-9b35-3950c89fa65d.PNG)
+    ![parking_app_build](https://user-images.githubusercontent.com/5947398/73191213-17326300-4162-11ea-811c-adb9fac9dcd2.PNG)
     
     ![image](https://user-images.githubusercontent.com/5947398/73188175-6b871400-415d-11ea-8a5f-c34a65aa8b85.png)
 
