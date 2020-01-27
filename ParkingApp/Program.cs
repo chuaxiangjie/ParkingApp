@@ -31,10 +31,24 @@ namespace ParkingApp.Client
 
         static void ProcessFromFile(IClientCarParkService service, string fileName)
         {
-   
-            string filePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), fileName);
 
-            if (File.Exists(filePath))
+            bool isExist = false;
+            string filePath = "";
+
+            //Check if file exists
+            if (File.Exists(fileName))
+            {
+                isExist = true;
+                filePath = fileName;
+            }
+            else
+            {
+                filePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), fileName);
+                if (File.Exists(filePath))
+                    isExist = true;
+            }
+
+            if (isExist)
             {
 
                 string[] lines = File.ReadAllLines(filePath);
@@ -55,13 +69,13 @@ namespace ParkingApp.Client
                 {
                     Console.WriteLine(ex.Message);
                 }
+
             }
             else
             {
                 Console.WriteLine($"Unable to locate file path: {filePath}");
                 Console.WriteLine("Exiting program..");
             }
-
         }
 
         static void ProcessFromConsole(IClientCarParkService service)
